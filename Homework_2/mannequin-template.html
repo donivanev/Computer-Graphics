@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+
+<html>
+	<head>
+		<script src="three.min.js"></script>
+		<style> body {color: black; text-shadow: 0 0 3px gray; text-align:center; font-family: Calibri;} label {cursor: default; margin: 0 1em;}</style>
+	</head>
+	
+	<body>
+		<!-- Въведете ф.н, група, имена + заглавие на домашното -->
+		<h1>
+			ф.н. 81992 &ndash; група 2 &ndash; Дони Иванов<br>
+			Заглавие на сцената
+		</h1>
+		
+		<script src="human.js"></script>
+		<script>
+
+			// дефиниция на човечетата и статичната им поза
+			/*var woman = new Female();
+				woman.position.y = 2;
+				woman.l_leg.straddle(-5);
+				woman.r_leg.straddle(-5);*/
+				
+			var man = new Male();
+				man.position.x = -25;
+				man.position.y = 3;
+				man.l_leg.straddle(7);
+				man.r_leg.straddle(7);
+
+			var man2 = new Male();
+				man2.position.x = 25;
+				man2.position.y = 3;
+				man2.l_leg.straddle(7);
+				man2.r_leg.straddle(7);
+				man2.rotation.set(0, 110, 0);
+
+				//основна позиция на man
+				man.l_knee.bend(20);
+				man.r_knee.bend(20);
+				man.l_ankle.bend(10);
+				man.r_ankle.bend(10);
+				man.pelvis.bend(-10);
+				man.torso.bend(10);
+
+				//основна позиция на man2
+				man2.l_knee.bend(20);
+				man2.r_knee.bend(20);
+				man2.l_ankle.bend(10);
+				man2.r_ankle.bend(10);
+				man2.pelvis.bend(-10);
+				man2.torso.bend(10);
+
+			// анимация на човечетата, поза в момент t
+			function animate(t)
+			{
+				// в момента само кима с глава
+				//woman.head.nod(35+15*cos(4*t));
+
+				//Първо действие - от естествена позиция до поклон и обратно
+				if(t > 120 && t < 240)
+				{
+					man.l_arm.raise(5);
+					man.l_arm.turn(20, RIGHT);
+					man.l_elbow.bend(35 + 50*cos(2*t));
+					man.l_wrist.turn(30, LEFT);
+					man.l_wrist.tilt(15, LEFT);
+
+					man.r_arm.raise(5);
+					man.r_arm.turn(20, LEFT);
+					man.r_elbow.bend(35 + 50*cos(2*t));		
+					man.r_wrist.turn(30, RIGHT);
+					man.r_wrist.tilt(15, RIGHT);
+
+					man2.l_arm.raise(5);
+					man2.l_arm.turn(20, RIGHT);
+					man2.l_elbow.bend(35 + 50*cos(2*t));
+					man2.l_wrist.turn(30, LEFT);
+					man2.l_wrist.tilt(15, LEFT);
+
+					man2.r_arm.raise(5);
+					man2.r_arm.turn(20, LEFT);
+					man2.r_elbow.bend(35 + 50*cos(2*t));		
+					man2.r_wrist.turn(30, RIGHT);
+					man2.r_wrist.tilt(15, RIGHT);
+
+					man.torso.bend(35 + 50*cos(2*t));
+					man2.torso.bend(35 + 50*cos(2*t));
+
+					if(t > 235)
+					{
+						//естествена позиция на лявата ръка на man
+						man.l_arm.raise(10);
+						man.l_arm.turn(50, RIGHT);
+						man.l_elbow.bend(15);
+						man.l_wrist.turn(50, LEFT);
+						man.l_wrist.tilt(15, LEFT);
+						man.l_wrist.bend(18+10*sin(4*t));
+
+						//естествена позиция на дясната ръка на man
+						man.r_arm.raise(10);
+						man.r_arm.turn(50, LEFT);
+						man.r_elbow.bend(15);
+						man.r_wrist.turn(50, RIGHT);
+						man.r_wrist.tilt(15, RIGHT);
+						man.r_wrist.bend(10+10*sin(4*t));
+
+						//естествена позиция на лявата ръка на man2
+						man2.l_arm.raise(10);
+						man2.l_arm.turn(50, RIGHT);
+						man2.l_elbow.bend(15);
+						man2.l_wrist.turn(50, LEFT);
+						man2.l_wrist.tilt(15, LEFT);
+						man2.l_wrist.bend(18+10*cos(4*t));
+
+						//естествена позиция на дясната ръка на man2
+						man2.r_arm.raise(10);
+						man2.r_arm.turn(50, LEFT);
+						man2.r_elbow.bend(15);
+						man2.r_wrist.turn(50, RIGHT);
+						man2.r_wrist.tilt(15, RIGHT);
+						man2.r_wrist.bend(13+10*sin(4*t));
+					}
+				}
+				
+				//Второ действие - движение в основна стойка
+				if (t > 230 && t < 300)
+				{	
+					//естествен вървеж на man
+					man.l_leg.raise(10 + 10*cos(4*t));
+					man.l_knee.bend(30 + 10*cos(4*t));
+					man.l_ankle.bend(5 + cos(2*t));
+					//man.torso.turn(20 + 5*cos(4*t));
+					man.l_wrist.bend(20 + 10*cos(4*t));
+
+					//естествен вървеж на man2
+					man2.l_leg.raise(10 + 10*cos(4*t));
+					man2.l_knee.bend(30 + 10*cos(4*t));
+					man2.l_ankle.bend(5 + cos(2*t));
+					//man2.torso.turn(20 + 5*cos(4*t));
+					man2.l_wrist.bend(30 + 10*cos(4*t));
+
+					man.position.x = -40 + t / 18;
+					man2.position.x = 40 - t / 18;
+				}
+
+				if (t > 300 && t < 390)
+				{	
+					//естествен вървеж на man
+					man.r_leg.raise(10 + 10*cos(4*t));
+					man.r_knee.bend(30 + 10*cos(4*t));
+					man.r_ankle.bend(5 + cos(2*t));
+					//man.torso.turn(10 + 5*sin(4*t));
+					man.r_wrist.bend(20 + 10*cos(4*t));
+
+					//естествен вървеж на man2
+					man2.r_leg.raise(10 + 10*cos(4*t));
+					man2.r_knee.bend(30 + 10*cos(4*t));
+					man2.r_ankle.bend(5 + cos(2*t));
+					//man2.torso.turn(10 + 5*sin(4*t));
+					man2.r_wrist.bend(30 + 10*cos(4*t));
+
+					man.position.x = -40 + t / 18;
+					man2.position.x = 40 - t / 18;
+				}
+
+				if (t > 390 && t < 480)
+				{	
+					//естествен вървеж на man
+					man.l_leg.raise(10 + 10*cos(4*t));
+					man.l_knee.bend(30 + 10*cos(4*t));
+					man.l_ankle.bend(5 + cos(2*t));
+					//man.torso.turn(10 + 5*sin(4*t));
+					man.l_wrist.bend(20 + 10*cos(4*t));
+
+					//естествен вървеж на man2
+					man2.l_leg.raise(10 + 10*cos(4*t));
+					man2.l_knee.bend(30 + 10*cos(4*t));
+					man2.l_ankle.bend(5 + cos(2*t));
+					//man2.torso.turn(10 + 5*sin(4*t));
+					man2.l_wrist.bend(30 + 10*cos(4*t));
+
+					man.position.x = -40 + t / 20;
+					man2.position.x = 40 - t / 20;
+				}
+
+				if (t > 480 && t < 570)
+				{	
+					//естествен вървеж на man
+					man.r_leg.raise(10 + 10*cos(4*t));
+					man.r_knee.bend(30 + 10*cos(4*t));
+					man.r_ankle.bend(5 + cos(2*t));
+					//man.torso.turn(10 + 5*sin(4*t));
+					man.r_wrist.bend(20 + 10*cos(4*t));
+
+					//естествен вървеж на man2
+					man2.r_leg.raise(10 + 10*cos(4*t));
+					man2.r_knee.bend(30 + 10*cos(4*t));
+					man2.r_ankle.bend(5 + cos(2*t));
+					//sman2.torso.turn(10 + 5*sin(4*t));
+					man2.r_wrist.bend(30 + 10*cos(4*t));
+
+					man.position.x = -40 + t / 20;
+					man2.position.x = 40 - t / 20;
+				}
+
+				if (t > 550 && t < 570)
+				{
+					//man.torso.turn(5*sin(4*t));
+					//man2.torso.turn(5*sin(4*t));
+					man.torso.bend(10 + 5*sin(4*t));
+					man2.torso.bend(10 + 5*sin(4*t));
+				}
+				
+				//уке - захват за яката
+				if (t > 560 && t < 580)
+				{
+					man2.l_arm.raise(90 + 10*sin(4*t));
+					man2.l_arm.straddle(70 + 10*sin(4*t), LEFT);
+					man2.l_arm.turn(10*sin(4*t), RIGHT);
+					man2.l_elbow.bend(50*sin(4*t), RIGHT);
+					man2.l_wrist.bend(10 + 20*sin(4*t));
+					man2.l_wrist.turn(50 + 20*sin(4*t), LEFT);
+					man2.l_wrist.tilt(-50 + 20*sin(4*t), LEFT);
+					man2.l_fingers.bend(20*sin(4*t), LEFT);
+				}
+				
+				//тори - захват за ръката
+				if (t > 580 && t < 620)
+				{
+					man.r_arm.raise(40 + 10*sin(4*t));
+					man.r_arm.straddle(40 + 10*sin(4*t));
+					man.r_arm.turn(10*sin(4*t));
+					man.r_elbow.bend(100 + 10*sin(4*t));
+					man.r_wrist.bend(30 + 20*sin(4*t));
+					man.r_wrist.turn(20 + 20*sin(4*t), LEFT);
+					man.r_wrist.tilt(20 + 20*sin(4*t), LEFT);
+					man.r_fingers.bend(20*sin(4*t), LEFT);
+				}
+				
+				/*if (t > 620 && t < 650)
+				{
+					man.r_arm.straddle(70 + 10*sin(4*t));
+					man.r_elbow.bend(90 + 10*sin(4*t));
+					man.r_wrist.tilt(10+10*sin(4*t), LEFT);
+					man.r_wrist.turn(20+10*sin(4*t), LEFT);
+					man.r_wrist.bend(10);
+					man2.l_arm.straddle(70 + 10*sin(4*t));
+					man2.l_wrist.bend(70 + 10*sin(4*t));
+					man2.l_wrist.turn(10 + 10*sin(4*t), LEFT);
+				}*/
+
+				if (t > 640 && t < 700)
+				{
+					man.l_leg.raise(40 + 10*sin(4*t));
+					man.l_leg.turn(50 + 10*sin(4*t), RIGHT);
+					//man.l_leg.raise(20 + 10*sin(4*t));
+					man.l_knee.bend(20 + 10*sin(4*t));
+					man.l_ankle.bend(-60 + 10*sin(4*t));
+				}
+
+				
+				if (t > 730 && t < 760)
+				{
+					man.position.x = -43 + t / 17;
+					man.turn(-180 + 10*cos(15*t));
+					man.r_arm.bend(100 + 10*sin(4*t), LEFT);
+					man2.l_elbow.bend(40 + 10*sin(4*t));
+					man.l_leg.straddle(10*sin(4*t));
+					man.l_leg.raise(-10 + 10*sin(4*t));
+					man.l_leg.turn(10 + 10*sin(4*t), LEFT);
+					man.l_knee.bend(10 + 10*sin(4*t));
+					man.l_ankle.bend(15 + 10*sin(4*t));
+					man.r_leg.raise(-10 + 10*sin(4*t));
+					man.r_knee.bend(5 + 10*sin(4*t));
+					man.r_ankle.bend(5 + 10*sin(4*t));
+					man.torso.turn(20 + 10*sin(4*t), LEFT);
+					man.r_arm.turn(50 + 10*sin(4*t), LEFT);
+					man.r_arm.straddle(50 + 10*sin(4*t));
+					//man.r_wrist.bend(60 + 10*sin(4*t));
+					man.r_elbow.bend(100 + 10*sin(4*t));
+					man2.l_arm.turn(10 + 10*sin(4*t), LEFT);
+					man2.l_arm.raise(80 + 10*sin(4*t));
+					man2.l_wrist.bend(-20 + 10*sin(4*t));
+				}
+
+				if (t > 770 && t < 800)
+				{
+					man.l_leg.raise(50 + 10*sin(4*t));
+					man.l_knee.bend(90 + 10*sin(4*t));
+					man.r_leg.raise(50 + 10*sin(4*t));
+					man.r_knee.bend(90 + 10*sin(4*t));
+					man.position.y += -27-man.l_ankle.point(0,0,0).y;
+					man.r_ankle.bend(30 + 10*sin(4*t));
+					man.r_arm.turn(50 + 10*sin(4*t), LEFT);
+					man.r_elbow.bend(110 + 10*sin(4*t));
+
+					man2.torso.bend(40 + 10*sin(4*t));
+					//man2.l_arm.straddle(20 + 10*sin(4*t));
+					man2.head.tilt(20 + 10*sin(4*t));
+					man2.l_arm.turn(10 + 10*sin(4*t), RIGHT);
+					man2.l_wrist.bend(-30 + 10*sin(4*t));
+				
+				}
+				/*if (t > 800 && t < 850)
+				{
+					man2.torso.bend(30 + 10*sin(4*t));
+					man2.head.tilt(20 + 10*sin(4*t));
+					man.r_arm.straddle(-20 + 10*sin(4*t));
+					man.r_arm.turn(-20 + 10*sin(4*t), RIGHT);
+					man.r_elbow.bend(70 + 10*sin(4*t));
+				}*/
+					
+				if (t > 800 && t < 850)
+				{
+					/*man.r_arm.turn(-20 + 10*sin(4*t), RIGHT);
+					man.r_wrist.turn(-40 + 10*sin(4*t), LEFT);
+					man.r_wrist.bend(-10 + 10*sin(4*t));
+					man.r_wrist.tilt(10 + 10*sin(4*t));
+					man.r_arm.turn(60 + 10*sin(4*t), LEFT);
+					man.r_arm.raise(70 + 10*sin(4*t));
+					man.r_arm.straddle(30 + 10*sin(4*t));
+					man.r_elbow.bend(120 + 10*sin(4*t));
+					man2.l_arm.turn(-10 + 10*sin(4*t), LEFT);
+					man2.l_arm.raise(-50 + 10*sin(4*t));
+					man2.l_arm.bend(95 + 10*sin(4*t));
+					man2.l_elbow.bend(30 + 10*sin(4*t));
+					man2.l_wrist.bend(20 + 10*sin(4*t));*/
+
+					man.r_wrist.turn(-25 + 10*sin(4*t), LEFT);
+					man2.r_arm.straddle(-30 + 10*sin(4*t), LEFT);
+					man.l_arm.turn(140 + 10*sin(4*t), LEFT);
+					man.l_arm.bend(80 + 10*sin(4*t));
+					man.l_arm.raise(50 + 10*sin(4*t));
+					man.l_elbow.bend(150 + 10*sin(4*t));
+					man.l_wrist.bend(-20 + 10*sin(4*t));
+					man.l_wrist.tilt(10*sin(4*t));
+					man.l_fingers.bend(-10 + 10*sin(4*t));
+					man.r_fingers.bend(-40 + 10*sin(4*t));
+				}
+/*
+				if (t > 790 && t < 820)
+				{
+					man2.r_arm.straddle(-30 + 10*sin(4*t), LEFT);
+					man.l_arm.turn(120 + 10*sin(4*t), LEFT);
+					man.l_arm.bend(80 + 10*sin(4*t));
+					man.l_arm.raise(40 + 10*sin(4*t));
+					man.l_elbow.bend(150 + 10*sin(4*t));
+					man.l_wrist.bend(10*sin(4*t));
+				}
+*/
+				if(t > 840 && t < 850)
+				{
+					man.torso.bend(70 + 10*sin(4*t));	
+					man.l_arm.raise(30 + 10*sin(4*t));
+					man2.r_arm.raise(-15 + 10*sin(4*t));
+					man2.torso.bend(25 + 10*sin(4*t));
+					man2.pelvis.bend(30 + 10*sin(4*t));
+					man2.position.x = -45 + t / 17;
+					man.r_arm.turn(-5 + 10*sin(4*t), LEFT);
+					man.r_arm.bend(30 + 10*sin(4*t));
+					man.r_arm.raise(90 + 10*sin(4*t));
+					man.r_elbow.bend(120 + 10*sin(4*t));
+					man.l_elbow.bend(145 + 10*sin(4*t));
+					man.l_wrist.bend(20 + 10*sin(4*t));
+					man.r_wrist.bend(20 + 10*sin(4*t));
+					man.l_fingers.bend(-50 + 10*sin(4*t));
+					man.r_fingers.bend(45 + 10*sin(4*t));
+					man.r_wrist.turn(80 + 10*sin(4*t), RIGHT);
+					man.l_arm.raise(90 + 10*sin(4*t));
+					man.l_arm.straddle(20 + 10*sin(4*t));
+					man.l_fingers.bend(-30 + 10*sin(4*t));
+					man.l_wrist.bend(-10 + 10*sin(4*t));
+					man.l_wrist.turn(30 + 10*sin(4*t), LEFT);
+					man.head.tilt(20 + 10*sin(4*t), RIGHT);
+				}
+
+				if(t > 850 && t < 930)
+				{
+					man.torso.bend(110 + 10*sin(4*t));	
+					man2.position.x = -60 + t / 17;
+					man2.torso.bend(10 + 10*sin(4*t));
+					man2.pelvis.bend(80 + 10*sin(4*t));
+				}
+				
+				// въртим сцената
+				scene.rotation.y = t/200;
+			}
+		</script>
+	</body>
+</html>
