@@ -1,0 +1,889 @@
+﻿<!DOCTYPE html>
+
+<!-- Домашно №1 по ОКГ -->
+	
+<html>
+	<head>
+		<script src="three.min.js"></script>
+		<script src="kanji.js"></script>
+		<style> body {color: white; text-align:center; font-family: Calibri;} label {cursor: default; margin: 0 1em;}</style>
+	</head>
+	
+	<body>
+		<!-- Въведете своя факултетен номер, група и имена -->
+		<h1>ф.н. 81992 &ndash; група 2 &ndash; Дони Иванов</h1>
+		
+		<label for="grid"><input id="grid" type="checkbox">МРЕЖА</label>
+		<label for="motion"><input id="motion" type="checkbox">ДВИЖЕНИЕ</label>
+		<label for="bw"><input id="bw" type="checkbox">ЧЕРНО НА БЯЛО</label>
+
+		<script>
+			createScene(); // дефинирана в kanji.js
+			
+			// като пример е създадена къщичка с изкривен покрив
+
+			// подът е легнал паралелепипед
+			var floor = new THREE.Mesh(
+					new THREE.BoxGeometry( 8, 1, 45 ),
+					new THREE.MeshPhongMaterial( {shininess:100, color:'tomato'} )
+				);
+				floor.position.y = -4;
+
+			// едната стена е изправен паралелепипед
+			var wall_a = new THREE.Mesh(
+					new THREE.BoxGeometry( 1, 5, 2 ),
+					floor.material
+				);
+				wall_a.position.set( -3.5, -1, 0 );
+
+			// другата стена е копие на първата, но на друго място
+			var wall_b = wall_a.clone();
+				wall_b.position.x = 3.5;
+				
+			// добавяме обектите към сцената
+			//scene.add( floor, wall_a, wall_b );
+			
+			// кривият покрив е дефиниран като 2D форма и функцията
+			// shape3D от kanji.js я изтегля в 3D чрез ExtrudeGeometry
+			var roof = new THREE.Shape();
+				roof.moveTo( -4.5,  1.5 );
+				roof.lineTo( +4.5,  1.5 );
+				roof.lineTo( +4.5,  2.5 );
+				roof.quadraticCurveTo( +2.0, 2.0, 0.0, 4.5 );
+				roof.quadraticCurveTo( -2.0, 2.0, -4.5, 2.5 );
+				roof.lineTo( -4.5,  1.5 );
+			//shape3D(roof);
+
+			// тук не добавяме покрива към сцената, 
+			// понеже shape3D прави и това вместо нас
+
+			//First part - from left
+			var curve1 = new THREE.Shape();
+				curve1.moveTo( -5, 5 ); 
+				curve1.lineTo( -2.84,  +5 ); 
+				curve1.lineTo( -2.84,  +4.34 ); 
+
+			shape3D(curve1);
+
+			var curve2 = new THREE.Shape();
+				curve2.moveTo( -5, 5 ); 
+				curve2.lineTo( -2.84,  +4.34 ); 
+				curve2.moveTo( -2.84,  +4.34 ); 
+				curve2.quadraticCurveTo( -3.54, +2.75, -4.29, +1.66 );
+
+			shape3D(curve2);
+
+			var curve3 = new THREE.Shape();
+				curve3.moveTo( -5, 5 ); 
+				curve3.lineTo( -4.29, +1.66 ); 
+				curve3.lineTo( -5, 0 ); 
+
+			shape3D(curve3);
+
+			var curve4 = new THREE.Shape();
+				curve4.moveTo( -5, 0 ); 
+				curve4.lineTo( -4.29, +1.66 ); 
+				curve4.lineTo( -4.12, 0.86 ); 
+
+			shape3D(curve4);
+
+			var curve5 = new THREE.Shape();
+				curve5.moveTo( -5, 0 ); 
+				curve5.lineTo( -4.12, 0.86 );
+				curve5.lineTo( -2.83, 1.04 ); 
+
+			shape3D(curve5);
+
+			var curve6 = new THREE.Shape();
+				curve6.moveTo( -5, 0 ); 
+				curve6.lineTo( -2.83, 1.04 ); 
+				curve6.lineTo( -3.56, -0.01 ); 
+
+			shape3D(curve6);
+
+			var curveR1 = new THREE.Shape();
+				curveR1.moveTo( 0, 5 ); 
+				curveR1.lineTo( -2.84, +5 ); 
+				curveR1.lineTo( -2.84, 4.34 ); 
+
+			shape3D(curveR1);
+
+			var curveR2 = new THREE.Shape();
+				curveR2.moveTo( 0, 5 ); 
+				curveR2.lineTo( -2.84, 4.34 ); 
+				curveR2.lineTo( -2, 4 );
+
+			shape3D(curveR2);
+
+			// L1 - G
+			var curveR3 = new THREE.Shape();
+				curveR3.moveTo( 0, 5 );
+				curveR3.lineTo( -2, 4 ); 
+				curveR3.lineTo( -1.78, 3.11 ); 
+
+			shape3D(curveR3);
+
+			var curveR4 = new THREE.Shape();
+				curveR4.moveTo( -2, 4 );
+				curveR4.lineTo( -1.78, 3.11 );
+				curveR4.lineTo( -2.35, 1.90 );
+
+			shape3D(curveR4);
+
+			var curveR5 = new THREE.Shape();
+				curveR5.moveTo( -2, 4 ); 
+				curveR5.quadraticCurveTo( -2.50, 2.96, -3.21, 1.80 );
+				curveR5.moveTo( -3.21, 1.80 );
+				curveR5.quadraticCurveTo( -2.68, 1.82, -2.35, 1.90 ); 
+
+			shape3D(curveR5);
+
+			// L1 - D3
+
+			var curveR6 = new THREE.Shape();
+				curveR6.moveTo( 0, 5 );
+				curveR6.lineTo( -0.87, 3.79 );
+				curveR6.lineTo( 0, 3.79 );
+
+			shape3D(curveR6);
+
+			// L1 - C3
+
+			var curveR61 = new THREE.Shape();
+				curveR61.moveTo( 0, 5 );
+				curveR61.lineTo( -1.78, 3.11 );
+				curveR61.lineTo( -0.87, 3.79 );
+
+			shape3D(curveR61);
+
+			// C3 - R
+
+			var curveR62 = new THREE.Shape();
+				curveR62.moveTo( -0.87, 3.79 );
+				curveR62.lineTo( -1.78, 3.11 );
+				curveR62.lineTo( -0.92, 2.69 );
+
+			shape3D(curveR62);
+
+			// T - C3
+
+			var curveR63 = new THREE.Shape();
+				curveR63.moveTo( -0.85, 0 );
+				curveR63.lineTo( -0.92, 2.69 );
+				curveR63.lineTo( -0.87, 3.79 );
+
+			shape3D(curveR63);
+
+			//H1 - R
+			var curveR8 = new THREE.Shape();
+				curveR8.moveTo( -2.29, 0 ); 
+				curveR8.lineTo( -2.58, -0.01 );  
+				curveR8.moveTo( -2.58, -0.01 );
+				curveR8.quadraticCurveTo( -1.70, 1.28, -0.92, 2.69 ); 
+
+			shape3D(curveR8);
+			
+
+			//H1 - R RIGHT
+			var curveR9 = new THREE.Shape();
+				curveR9.moveTo( -2.29, 0 ); 
+				curveR9.lineTo( -1.58, 0.28 ); 
+				curveR9.lineTo( -0.92, 2.69 );
+
+			shape3D(curveR9);
+
+			//T - E3
+			var curveR10 = new THREE.Shape();
+				curveR10.moveTo( -0.85, 0 ); 
+				curveR10.lineTo( -1.45, 0 ); 
+				curveR10.lineTo( -1.58, 0.28 );
+
+			shape3D(curveR10);
+
+			//T - R
+			var curveR11 = new THREE.Shape();
+				curveR11.moveTo( -0.85, 0 ); 
+				curveR11.lineTo( -1.58, 0.28 ); 
+				curveR11.lineTo( -0.92, 2.69 );
+
+			shape3D(curveR11);
+
+			var curveR13 = new THREE.Shape();
+				curveR13.moveTo( 0, 5 );
+				curveR13.lineTo( -0.87, 3.79 ); 
+				curveR13.lineTo( -0.01, 3.79 );
+
+			shape3D(curveR13);
+
+			// DOWN LEFT
+
+			var curveL1 = new THREE.Shape();
+				curveL1.moveTo( -5, 0 );
+				curveL1.lineTo( -3.56, -0.01 ); 
+				curveL1.quadraticCurveTo( -3.93, -0.49, -4.41, -0.96 );
+
+			shape3D(curveL1);
+
+			var curveL2 = new THREE.Shape();
+				curveL2.moveTo( -5, 0 );
+				curveL2.lineTo( -4.41, -0.96 ); 
+				curveL2.lineTo( -5, -2 );
+
+			shape3D(curveL2);
+
+			var curveL3 = new THREE.Shape();
+				curveL3.moveTo( -5, -2 );
+				curveL3.lineTo( -4.41, -0.96 ); 
+				curveL3.lineTo( -4.13, -1.71 );
+
+			shape3D(curveL3);
+
+			var curveL4 = new THREE.Shape();
+				curveL4.moveTo( -5, -2 );
+				curveL4.lineTo( -4.15, -1.71 ); 
+				curveL4.lineTo( -4.06, -1.85 );
+
+			shape3D(curveL4);
+
+			var curveL5 = new THREE.Shape();
+				curveL5.moveTo( -5, -2 );
+				curveL5.lineTo( -4.06, -1.85 );
+				curveL5.moveTo( -4.06, -1.85 );
+				curveL5.quadraticCurveTo( -4.19, -3.02, -4.53, -4.10);
+				curveL5.lineTo( -5, -2 );
+
+			shape3D(curveL5);
+
+			var curveL6 = new THREE.Shape();
+				curveL6.moveTo( -5, -2 );
+				curveL6.lineTo( -4.50, -4.05 );
+				curveL6.lineTo( -5, -5 );
+
+			shape3D(curveL6);
+
+			var curveL7 = new THREE.Shape();
+				curveL7.moveTo( -5, -5 );
+				curveL7.lineTo( -4.50, -4.05 );
+				curveL7.lineTo( -3.78, -4.43 );
+
+			shape3D(curveL7);
+
+			// A - down
+			var curveL8 = new THREE.Shape();
+				curveL8.moveTo( -5, -5 );
+				curveL8.lineTo( -3.78, -4.43 );
+				curveL8.lineTo( 0, -5 );
+
+			shape3D(curveL8);
+
+			var curveL9 = new THREE.Shape();
+				curveL9.moveTo( 0, -5 );
+				curveL9.lineTo( -0.85, -4.21 );
+				curveL9.lineTo( 0, -4.21 );
+
+			shape3D(curveL9);
+
+			var curveL10 = new THREE.Shape();
+				curveL10.moveTo( -3.78, -4.43 );
+				curveL10.lineTo( -2.95, -4.10 );
+				curveL10.lineTo( -0.85, -4.21 );
+
+			shape3D(curveL10);
+
+			var curveL11 = new THREE.Shape();
+				curveL11.moveTo( -0.85, -4.21 );
+				curveL11.lineTo( -3.78, -4.43 );
+				curveL11.lineTo( 0, -5 );
+
+			shape3D(curveL11);
+
+			//T1-H2-J
+
+			var curveL12 = new THREE.Shape();
+				curveL12.moveTo( -2.95, -4.10 );
+				curveL12.lineTo( -3.78, -4.43 );
+				curveL12.quadraticCurveTo( -3.42, -3.34, -3.24, -2.12 );
+
+			shape3D(curveL12);
+
+			var curveL13 = new THREE.Shape();
+				curveL13.moveTo( -3.24, -2.12 );
+				curveL13.lineTo( -3.09, -2.15 );
+				curveL13.moveTo( -3.09, -2.15 );
+				curveL13.quadraticCurveTo( -2.96, -2.85, -2.95, -4.10 );
+
+			shape3D(curveL13);
+
+			var curveL14 = new THREE.Shape();
+				curveL14.moveTo( -2.95, -4.10 );
+				curveL14.lineTo( -2.16, -3.97 );
+				curveL14.lineTo( -0.85, -4.25 );
+
+			shape3D(curveL14);
+
+			var curveL15 = new THREE.Shape();
+				curveL15.moveTo( -2.16, -3.97 );
+				curveL15.lineTo( -1.74, -3.80 );
+				curveL15.lineTo( -0.85, -4.25 );
+
+			shape3D(curveL15);
+
+			var curveL16 = new THREE.Shape();
+				curveL16.moveTo( -0.85, -4.25 );
+				curveL16.lineTo( -1.74, -3.80 );
+				curveL16.lineTo( -1.05, -3.62 );
+
+			shape3D(curveL16);
+
+			var curveL17 = new THREE.Shape();
+				curveL17.moveTo( -1.74, -3.80 );
+				curveL17.lineTo( -2.16, -3.97 );
+				curveL17.moveTo( -2.16, -3.97 );
+				curveL17.quadraticCurveTo( -2.20, -3.01, -2.39, -2.02 );
+
+			shape3D(curveL17);
+
+			var curveL18 = new THREE.Shape();
+				curveL18.moveTo( -2.39, -2.02 );
+				curveL18.lineTo( -2.10, -2.02 );
+				curveL18.moveTo( -2.10, -2.02 );
+				curveL18.quadraticCurveTo( -1.83, -2.84, -1.74, -3.80);
+
+			shape3D(curveL18);
+
+			//L4-Q2
+			var curveL18 = new THREE.Shape();
+				curveL18.moveTo( -0.85, -1.99 );
+				curveL18.lineTo( -1.40, -1.89 );
+				curveL18.moveTo( -1.40, -1.89 );
+				curveL18.quadraticCurveTo( -1.13, -2.85, -1.05, -3.62);
+
+			shape3D(curveL18);
+
+			var curveL19 = new THREE.Shape();
+				curveL19.moveTo( -0.85, -4.25 );
+				curveL19.lineTo( -1.05, -3.62 );
+				curveL19.lineTo( -0.85, -1.99 );
+
+			shape3D(curveL19);
+
+			// LOW-MID
+
+			var curveLM1 = new THREE.Shape();
+				curveLM1.moveTo( -4.15, -1.71 );
+				curveLM1.lineTo( -4.06, -1.85 );
+				curveLM1.lineTo( -1.86, -1.31 );
+
+			shape3D(curveLM1);
+
+			var curveLM2 = new THREE.Shape();
+				curveLM2.moveTo( -1.86, -1.31 );
+				curveLM2.lineTo( -4.06, -1.85 );
+				curveLM2.lineTo( -3.26, -2.11 );
+
+			shape3D(curveLM2);
+
+			var curveLM3 = new THREE.Shape();
+				curveLM3.moveTo( -0.85, -1.99 );
+				curveLM3.lineTo( -1.40, -1.89 );	
+				curveLM3.lineTo( -1.00, -1.43 );
+
+			shape3D(curveLM3);
+
+			var curveLM4 = new THREE.Shape();
+				curveLM4.moveTo( -0.85, -1.99 );
+				curveLM4.lineTo( -1.00, -1.43 );	
+				curveLM4.lineTo( -0.85, -1.43 );
+
+			shape3D(curveLM4);
+
+			var curveLM5 = new THREE.Shape();
+				curveLM5.moveTo( -0.85, 0.99 );
+				curveLM5.lineTo( -1.58, 0.28 );	
+				curveLM5.moveTo( -1.58, 0.28  );
+				curveLM5.quadraticCurveTo( -1.21, -0.65, -0.98, -1.43 );
+
+			shape3D(curveLM5);
+
+			var curveLM6 = new THREE.Shape();
+				curveLM6.moveTo( -0.98, -1.43 );
+				curveLM6.lineTo( -0.85, 0 );	
+				curveLM6.lineTo( -0.85, -1.43 );
+
+			shape3D(curveLM6);
+
+			var curveLM61 = new THREE.Shape();
+				curveLM61.moveTo( -0.98, -1.43 );
+				curveLM61.lineTo( -0.85, 0 );	
+				curveLM61.lineTo( -0.95, 0 );
+
+			shape3D(curveLM61);
+
+			//W2-Q2
+			var curveLM7 = new THREE.Shape();
+				curveLM7.moveTo( -0.98, -1.43 );
+				curveLM7.lineTo( -1.40, -1.89 );	
+				curveLM7.lineTo( -1.74, -1.67 );
+
+			shape3D(curveLM7);
+
+			var curveLM8 = new THREE.Shape();
+				curveLM8.moveTo( -1.40, -1.89 );
+				curveLM8.lineTo( -1.74, -1.67 );	
+				curveLM8.lineTo( -2.10, -2.02 );
+
+			shape3D(curveLM8);
+
+			var curveLM9 = new THREE.Shape();
+				curveLM9.moveTo( -2.10, -2.02 );
+				curveLM9.lineTo( -1.86, -1.31 );	
+				curveLM9.moveTo( -1.86, -1.31 );
+				curveLM9.quadraticCurveTo( -1.73, -1.51, -1.74, -1.67 );
+
+			shape3D(curveLM9);
+
+			var curveLM10 = new THREE.Shape();
+				curveLM10.moveTo( -2.39, -2.02 );
+				curveLM10.lineTo( -1.86, -1.31 );	
+				curveLM10.lineTo( -2.10, -2.02 );
+
+			shape3D(curveLM10);
+
+			var curveLM11 = new THREE.Shape();
+				curveLM11.moveTo( -2.39, -2.02 );
+				curveLM11.lineTo( -1.86, -1.31 );	
+				curveLM11.lineTo( -2.10, -2.02 );
+
+			shape3D(curveLM11);
+
+			var curveLM12 = new THREE.Shape();
+				curveLM12.moveTo( -3.26, -2.11 );
+				curveLM12.lineTo( -1.86, -1.31 );	
+				curveLM12.lineTo( -3.09, -2.15 );
+
+			shape3D(curveLM12);
+
+			var curveLM13 = new THREE.Shape();
+				curveLM13.moveTo( -3.16, -0.77 );
+				curveLM13.lineTo( -2.29, 0.02 );	
+				curveLM13.moveTo( -2.29, 0.02 );
+				curveLM13.quadraticCurveTo( -2.16, -0.22, -2.11, -0.52 );
+
+			shape3D(curveLM13);
+
+			var curveLM14 = new THREE.Shape();
+				curveLM14.moveTo( -2.29, 0.02 );
+				curveLM14.lineTo( -3.16, -0.77 );	
+				curveLM14.lineTo( -2.58, -0.01 );
+
+			shape3D(curveLM14);
+
+			var curveLM15 = new THREE.Shape();
+				curveLM15.moveTo( -1.86, -1.31 );
+				curveLM15.lineTo( -3.09, -2.15 );	
+				curveLM15.lineTo( -2.39, -2.02 );
+
+			shape3D(curveLM15);
+
+			//RIGHT SIDE
+
+			//L1-J3
+			var graph1 = new THREE.Shape();
+				graph1.moveTo( 0, 5 );
+				graph1.lineTo( 0.28, 3.55);	
+				graph1.lineTo( 0.97, 3.84 );
+
+			shape3D(graph1);
+
+			//L1 - 0,0
+			var graph2 = new THREE.Shape();
+				graph2.moveTo( 0, 5 );
+				graph2.lineTo( 0.28, 3.55 );	
+				graph2.lineTo( 0, 0 );
+
+			shape3D(graph2);
+
+			//L1-N3
+			var graph3 = new THREE.Shape();
+				graph3.moveTo( 0, 5 );
+				graph3.lineTo( 0.97, 3.84);	
+				graph3.lineTo( 1.84, 4.20 );
+
+			shape3D(graph3);
+
+			//L1-C
+			var graph4 = new THREE.Shape();
+				graph4.moveTo( 0, 5 );
+				graph4.lineTo( 1.84, 4.20 );	
+				graph4.lineTo( 5, 5 );
+
+			shape3D(graph4);
+
+			//C-N3
+			var graph5 = new THREE.Shape();
+				graph5.moveTo( 5, 5 );
+				graph5.lineTo( 2.67, 4.20 );	
+				graph5.lineTo( 1.84, 4.20 );
+
+			shape3D(graph5);
+
+			//C-A4
+			var graph6 = new THREE.Shape();
+				graph6.moveTo( 5, 5 );
+				graph6.lineTo( 3.47, 3.84 );	
+				graph6.lineTo( 2.67, 4.20 );
+
+			shape3D(graph6);
+
+			//C-O4
+			var graph7 = new THREE.Shape();
+				graph7.moveTo( 5, 5 );
+				graph7.lineTo( 3.47, 3.84 );	
+				graph7.lineTo( 4.26, 3.59 );
+
+			shape3D(graph7);
+
+			//C- 5, 0
+			var graph8 = new THREE.Shape();
+				graph8.moveTo( 5, 5 );
+				graph8.lineTo( 4.26, 3.59 );	
+				graph8.lineTo( 5, 0 );
+
+			shape3D(graph8);
+
+			//C- 5, 0
+			var graph9 = new THREE.Shape();
+				graph9.moveTo( 5, 5 );
+				graph9.lineTo( 4.26, 3.59 );	
+				graph9.lineTo( 5, 0 );
+
+			shape3D(graph9);
+
+			//P3 - L3
+			var graph10 = new THREE.Shape();
+				graph10.moveTo( 0.28, 1.27 ); 
+				graph10.lineTo( 0.28, 3.55 );	
+				graph10.moveTo( 0.28, 3.55 );
+				graph10.quadraticCurveTo( 0.72, 2.28, 0.87, 1.52 );
+
+			shape3D(graph10);
+
+			//O3 - M3
+			var graph11 = new THREE.Shape();
+				graph11.moveTo( 1.84, 1.27 ); // L
+				graph11.lineTo( 0.87, 1.52 ); // O
+				graph11.lineTo( 1.59, 1.75 ); // N
+
+			shape3D(graph11);
+
+			//P3 - O3
+			var graph12 = new THREE.Shape();
+				graph12.moveTo( 0.28, 1.27 );
+				graph12.lineTo( 0.87, 1.52 );	
+				graph12.lineTo( 1.84, 1.27 );
+
+			shape3D(graph12);
+
+			//O3 - N3
+			var graph13 = new THREE.Shape();
+				graph13.moveTo( 1.84, 1.27 );
+				graph13.lineTo( 1.59, 1.75 );	
+				graph13.lineTo( 1.84, 4.20 );
+
+			shape3D(graph13);
+
+			//O3 - N3
+			var graph14 = new THREE.Shape();
+				graph14.moveTo( 1.84, 4.20 );
+				graph14.lineTo( 0.97, 3.84 );	
+				graph14.moveTo( 0.97, 3.84 );
+				graph14.quadraticCurveTo( 1.41, 2.70, 1.59, 1.75);
+
+			shape3D(graph14);
+
+			//0,0 - P3
+			var graph15 = new THREE.Shape();
+				graph15.moveTo( 0, 0 );
+				graph15.lineTo( 0.28, 3.55 );	
+				graph15.lineTo( 0.28, 1.27 );
+
+			shape3D(graph15);
+
+			//0,0 - Q3
+			var graph16 = new THREE.Shape();
+				graph16.moveTo( 0, 0 );
+				graph16.lineTo( 0.28, 1.27 );	
+				graph16.lineTo( 0.28, 0.43 ); 
+
+			shape3D(graph16);
+
+			//RIGHT PART 
+
+			//W3 - W4
+			var graphR1 = new THREE.Shape();
+				graphR1.moveTo( 4.22, 1.27 );
+				graphR1.lineTo( 4.26, 3.59 );	
+				graphR1.moveTo( 4.26, 3.59 );
+				graphR1.quadraticCurveTo( 3.93, 2.30, 3.59, 1.48 );
+
+			shape3D(graphR1);
+
+			//5,0 - О4  
+			var graphR2 = new THREE.Shape();
+				graphR2.moveTo( 5, 0 );
+				graphR2.lineTo( 4.22, 1.27 );	
+				graphR2.lineTo( 4.26, 3.59 );
+
+			shape3D(graphR2);
+
+			//5,0 - V3  
+			var graphR3 = new THREE.Shape();
+				graphR3.moveTo( 5, 0 );
+				graphR3.lineTo( 4.22, 1.27 );	
+				graphR3.lineTo( 4.22, 0.41 );
+
+			shape3D(graphR3);
+
+			//W3 - Z3  
+			var graphR4 = new THREE.Shape();
+				graphR4.moveTo( 4.22, 1.27 );
+				graphR4.lineTo( 3.59, 1.48 );	
+				graphR4.lineTo( 2.67, 1.27 );
+
+			shape3D(graphR4);
+
+			//Z3 - W4  
+			var graphR5 = new THREE.Shape();
+				graphR5.moveTo( 2.67, 1.27 );
+				graphR5.lineTo( 2.88, 1.78 );	
+				graphR5.lineTo( 3.59, 1.48 );
+
+			shape3D(graphR5);
+
+			//Z3 - A4  
+			var graphR6 = new THREE.Shape();
+				graphR6.moveTo( 2.67, 1.27 );
+				graphR6.lineTo( 2.88, 1.78 );	
+				graphR6.lineTo( 2.67, 4.20 );
+
+			shape3D(graphR6);
+
+			//A4 - N4  
+			var graphR7 = new THREE.Shape();
+				graphR7.moveTo( 2.67, 4.20 );
+				graphR7.lineTo( 2.88, 1.78 );	
+				graphR7.moveTo( 2.88, 1.78 );
+				graphR7.quadraticCurveTo( 3.24, 2.76, 3.47, 3.84 );
+
+			shape3D(graphR7);
+
+			//LEFT PART
+			//0, 0 - F5  
+			var graphL1 = new THREE.Shape();
+				graphL1.moveTo( 0, 0 );
+				graphL1.lineTo( 0.26, 0.41 );	
+				graphL1.lineTo( 0.87, 0.03 );
+
+			shape3D(graphL1);
+
+			//Q3 - R3  
+			var graphL2 = new THREE.Shape();
+				graphL2.moveTo( 0.26, 0.41 );
+				graphL2.lineTo( 0.87, 0.03 );	
+				graphL2.lineTo( 1.83, 0.41 );
+
+			shape3D(graphL2);
+
+			//Q3 - R3  
+			var graphL3 = new THREE.Shape();
+				graphL3.moveTo( 0.26, 0.41 );
+				graphL3.lineTo( 0.87, 0.03 );	
+				graphL3.lineTo( 1.84, 0.38 );
+
+			shape3D(graphL3);
+
+			//R3 - G5  
+			var graphL4 = new THREE.Shape();
+				graphL4.moveTo( 1.82, 0.41 ); 
+				graphL4.lineTo( 0.87, 0.03 );	
+				graphL4.lineTo( 1.58, -0.21 );
+
+			shape3D(graphL4);
+
+			//R3 - S3  
+			var graphL5 = new THREE.Shape();
+				graphL5.moveTo( 1.82, 0.41 );
+				graphL5.lineTo( 1.58, -0.21 );	
+				graphL5.lineTo( 1.84, -3.09 );
+
+			shape3D(graphL5);
+
+			//0, 0 - I3  
+			var graphL6 = new THREE.Shape();
+				graphL6.moveTo( 0, 0 );
+				graphL6.lineTo( 0.18, -2.50 );	
+				graphL6.lineTo( 0, -3.39 );
+
+			shape3D(graphL6);
+
+			//0, 0 - F5  
+			var graphL7 = new THREE.Shape();
+				graphL7.moveTo( 0, 0 );
+				graphL7.lineTo( 0.18, -2.50 );	
+				graphL7.moveTo( 0.18, -2.50 );
+				graphL7.quadraticCurveTo( 0.58, -1.31, 0.87, 0.03 );
+
+			shape3D(graphL7);
+
+			//I3 - I5  
+			var graphL8 = new THREE.Shape();
+				graphL8.moveTo( 0, -3.39 );
+				graphL8.lineTo( 0.18, -2.50 );	
+				graphL8.lineTo( 0.80, -2.88 );
+
+			shape3D(graphL8);
+
+			//I3 - S3  
+			var graphL9 = new THREE.Shape();
+				graphL9.moveTo( 0, -3.39 );
+				graphL9.lineTo( 0.80, -2.88 );	
+				graphL9.lineTo( 1.84, -3.09 );
+
+			shape3D(graphL9);
+
+			//S3 - I5  
+			var graphL10 = new THREE.Shape();
+				graphL10.moveTo( 1.84, -3.09 );
+				graphL10.lineTo( 1.58, -0.21 );	
+				graphL10.moveTo( 1.58, -0.21 );
+				graphL10.quadraticCurveTo( 1.21, -1.87, 0.80, -2.88 );
+
+			shape3D(graphL10);
+
+			//I3 - H3	  
+			var graphL11 = new THREE.Shape();
+				graphL11.moveTo( 0, -3.39 );
+				graphL11.lineTo( 1.84, -3.05 );	
+				graphL11.lineTo( 4.30, -3.39 );
+
+			shape3D(graphL11);
+
+			//RIGHT BOT
+
+			//H3 - T3	  
+			var graphRB1 = new THREE.Shape();
+				graphRB1.moveTo( 4.30, -3.39 );
+				graphRB1.lineTo( 1.84, -3.05 );	
+				graphRB1.lineTo( 2.67, -3.05 );
+
+			shape3D(graphRB1);
+
+			//H3 - L5	  
+			var graphRB2 = new THREE.Shape();
+				graphRB2.moveTo( 4.30, -3.39 );
+				graphRB2.lineTo( 2.67, -3.05 );	
+				graphRB2.lineTo( 3.52, -2.79 );
+
+			shape3D(graphRB2);
+
+			//H3 - M5	  
+			var graphRB3 = new THREE.Shape();
+				graphRB3.moveTo( 4.30, -3.39 );
+				graphRB3.lineTo( 3.52, -2.79 );	
+				graphRB3.lineTo( 4.25, -2.51 );
+
+			shape3D(graphRB3);
+
+			//5, 0 - V3	  
+			var graphRB4 = new THREE.Shape();
+				graphRB4.moveTo( 5, 0 );
+				graphRB4.lineTo( 3.54, 0.06 );	
+				graphRB4.lineTo( 4.22, 0.41 );
+
+			shape3D(graphRB4);
+
+			//U3 - V3	  
+			var graphRB5 = new THREE.Shape();
+				graphRB5.moveTo( 2.68, 0.41 );
+				graphRB5.lineTo( 3.54, 0.06 );	
+				graphRB5.lineTo( 4.22, 0.41 );
+
+			shape3D(graphRB5);
+
+			//U3 - K5  
+			var graphRB6 = new THREE.Shape();
+				graphRB6.moveTo( 2.68, 0.41 );
+				graphRB6.lineTo( 2.88, -0.24 );	
+				graphRB6.lineTo( 4.22, 0.41 );
+	
+			shape3D(graphRB6);
+
+			//U3 - T3  
+			var graphRB7 = new THREE.Shape();
+				graphRB7.moveTo( 2.68, 0.41 );
+				graphRB7.lineTo( 2.88, -0.24 );	
+				graphRB7.lineTo( 2.67, -3.07 );
+	
+			shape3D(graphRB7);
+
+			//T3 - L5  
+			var graphRB8 = new THREE.Shape();
+				graphRB8.moveTo( 2.67, -3.07 );
+				graphRB8.lineTo( 2.88, -0.24 );	
+				graphRB8.moveTo( 2.88, -0.24 );
+				graphRB8.quadraticCurveTo( 3.30, -1.57, 3.52, -2.79 );
+	
+			shape3D(graphRB8);
+
+			//5, 0 - M5  
+			var graphRB9 = new THREE.Shape();
+				graphRB9.moveTo( 5, 0 );
+				graphRB9.lineTo( 4.25, -2.51 );	
+				graphRB9.moveTo( 4.25, -2.51 );
+				graphRB9.quadraticCurveTo( 3.96, -1.16, 3.54, 0.06 );
+	
+			shape3D(graphRB9);
+
+			//5, 0 - B  
+			var graphRB10 = new THREE.Shape();
+				graphRB10.moveTo( 5, 0 );
+				graphRB10.lineTo( 4.25, -2.51 );	
+				graphRB10.lineTo( 5, -5 );
+	
+			shape3D(graphRB10);
+
+			//B - M5  
+			var graphRB11 = new THREE.Shape();
+				graphRB11.moveTo( 5, -5 );
+				graphRB11.lineTo( 4.28, -3.35 );	
+				graphRB11.lineTo( 4.25, -2.51 );
+	
+			shape3D(graphRB11);
+
+			//B - H3 
+			var graphRB12 = new THREE.Shape();
+				graphRB12.moveTo( 5, -5 );
+				graphRB12.lineTo( 4.28, -4.21 );	
+				graphRB12.lineTo( 4.28, -3.35 );
+	
+			shape3D(graphRB12);
+
+			//B - F3 
+			var graphRB13 = new THREE.Shape();
+				graphRB13.moveTo( 5, -5 );
+				graphRB13.lineTo( 4.28, -4.21 );	
+				graphRB13.lineTo( -0.85, -4.21 );
+	
+			shape3D(graphRB13);
+
+			//B - to the bottom 
+			var graphRB14 = new THREE.Shape();
+				graphRB14.moveTo( 5, -5 );
+				graphRB14.lineTo( 0, -4.21 );	
+				graphRB14.lineTo( -0.85, -5 );
+	
+			shape3D(graphRB14); 
+
+		</script>
+	</body>
+</html>
