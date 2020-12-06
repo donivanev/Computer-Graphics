@@ -15,6 +15,7 @@
 */
 
 // създаване на сцената
+
 function createScene()
 {
 	// рисувателно поле
@@ -25,17 +26,14 @@ function createScene()
 		renderer.setAnimationLoop(drawFrame);
 		document.body.appendChild( renderer.domElement );
 
-
 	// сцена
 	scene = new THREE.Scene();
 		scene.background = new THREE.Color('gainsboro');
 		scene.fog = new THREE.Fog('gainsboro',100,600);
 
-
 	// камера
 	camera = new THREE.PerspectiveCamera( 30, window.innerWidth/window.innerHeight, 0.1, 2000 );
 		camera.position.set(0,0,150);
-	
 	
 	// светлини
 	var light = new THREE.PointLight('white',0.5);
@@ -44,7 +42,6 @@ function createScene()
 		light.shadow.mapSize.height = 1024;	
 		light.castShadow = true;
 		scene.add( light, new THREE.AmbientLight('white',0.5) );
-	
 	
 	// поддържане на пропорциите при промяна на размера на прозореца
 	window.addEventListener( 'resize', onWindowResize, false );
@@ -59,11 +56,9 @@ function createScene()
 		ground.position.y = -30;
 		scene.add( ground );
 
-	
 	// таймер
 	clock = new THREE.Clock();
 }
-
 
 function onWindowResize( event )
 {
@@ -73,24 +68,20 @@ function onWindowResize( event )
 	renderer.setSize( window.innerWidth, window.innerHeight, true );
 }
 
-
 function drawFrame()
 {
 	if( animate ) animate(100*clock.getElapsedTime());
 	renderer.render( scene, camera );
 }
-
 	
 // помощни функции за работа с градуси
 function rad(x) {return x*Math.PI/180;}
 function sin(x) {return Math.sin(rad(x));}
 function cos(x) {return Math.cos(rad(x));}
 
-
 // посоки на движение
 const LEFT = -1;
 const RIGHT = 1;
-
 
 // цветове и вградени текстури за глава и крайници
 var colors = [
@@ -102,14 +93,11 @@ var colors = [
 	'white'		// торс
 ]; 
 
-
 // вградена текстура за главата
 var texHead = new THREE.TextureLoader().load("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAGFBMVEX////Ly8v5+fne3t5GRkby8vK4uLi/v7/GbmKXAAAAZklEQVRIx2MYQUAQHQgQVkBtwEjICkbK3MAkQFABpj+R5ZkJKTAxImCFSSkhBamYVgiQrAADEHQkIW+iqiBCAfXjAkMHpgKqgyHgBiwBRfu4ECScYEZGvkD1JxEKhkA5OVTqi8EOAOyFJCGMDsu4AAAAAElFTkSuQmCC");
 
-
 // вградена текстура за крайниците и тялото
 var texLimb = new THREE.TextureLoader().load("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAQMAAACQp+OdAAAABlBMVEX////Ly8vsgL9iAAAAHElEQVQoz2OgEPyHAjgDjxoKGWTaRRkYDR/8AAAU9d8hJ6+ZxgAAAABJRU5ErkJggg==");
-
 
 // шаблон за сферичка, която се слага в ставите
 var sphere = new THREE.Mesh(
@@ -118,7 +106,6 @@ var sphere = new THREE.Mesh(
 	);
 sphere.castShadow = true;
 sphere.receiveShadow = true;
-
 
 // изчислява косинусова издутина
 function cossers(u,v,params)
@@ -136,7 +123,6 @@ function cossers(u,v,params)
 	return r;
 }
 
-
 // създава параметрична повърхност чрез функцията ѝ
 class ParametricShape extends THREE.Group
 {
@@ -150,7 +136,6 @@ class ParametricShape extends THREE.Group
 		obj.receiveShadow = true;
 		obj.castShadow = true;
 		this.add( obj );
-
 	}
 
 	addSphere(r,y)
@@ -159,10 +144,8 @@ class ParametricShape extends THREE.Group
 		s.scale.set(r,r,r);
 		s.position.set(0,y,0);
 		this.add(s);
-	}
-		
+	}		
 }
-
 
 // форма на глава като параметрична повърхнина
 class HeadShape extends ParametricShape
@@ -186,7 +169,6 @@ class HeadShape extends ParametricShape
 		},32,32);
 	}
 }
-
 
 // форма на обувка като параметрична повърхнина
 class ShoeShape extends THREE.Group
@@ -225,7 +207,6 @@ class ShoeShape extends THREE.Group
 	}
 }
 
-
 // форма на таз като параметрична повърхнина
 class PelvisShape extends ParametricShape
 {
@@ -243,7 +224,6 @@ class PelvisShape extends ParametricShape
 		},20,10);
 	}
 }
-
 
 // форма на крайник като параметрична повърхнина
 class LimbShape extends ParametricShape
@@ -266,7 +246,6 @@ class LimbShape extends ParametricShape
 		if( rad ) this.addSphere(rad?rad:z/2,-y/2);
 	}
 }
-
 
 // форма на торс като параметрична повърхнина
 class TorsoShape extends ParametricShape
@@ -296,7 +275,6 @@ class TorsoShape extends ParametricShape
 		this.addSphere(2,-y/2);
 	}
 }
-
 
 // дефиниция на подвижна става с възможност за подстави
 class Joint extends THREE.Group
@@ -351,7 +329,6 @@ class Joint extends THREE.Group
 		this._turn();
 	}
 	
-	
 	bend(angle)
 	{
 		this.bendAngle = angle;
@@ -401,7 +378,6 @@ class Joint extends THREE.Group
 
 }
 
-
 class Pelvis extends Joint
 {
 	constructor(parentJoint)
@@ -410,7 +386,6 @@ class Pelvis extends Joint
 	}
 }
 
-
 class Torso extends Joint
 {
 	constructor(parentJoint)
@@ -418,7 +393,6 @@ class Torso extends Joint
 		super(parentJoint,[-2,4,0],[0,0,20],[5,17,10,parentJoint.feminine?10:80,parentJoint.feminine?520:380,parentJoint.feminine?0.8:0.9,parentJoint.feminine?0.25:0.2],TorsoShape);
 	}
 }
-
 
 class Neck extends Joint
 {
@@ -449,7 +423,6 @@ class Head extends Joint
 	}
 }
 
-
 class Leg extends Joint
 {
 	constructor(parentJoint,leftOrRight)
@@ -477,7 +450,6 @@ class Leg extends Joint
 	}
 }
 
-
 class Knee extends Joint
 {
 	constructor(parentJoint)
@@ -491,7 +463,6 @@ class Knee extends Joint
 		this._turn();
 	}
 }
-
 
 class Ankle extends Joint
 {
@@ -512,7 +483,6 @@ class Ankle extends Joint
 		this._turn();
 	}
 }
-
 
 class Arm extends Joint
 {
@@ -541,7 +511,6 @@ class Arm extends Joint
 	}
 }
 
-
 class Elbow extends Joint
 {
 	constructor(parentJoint)
@@ -549,7 +518,6 @@ class Elbow extends Joint
 		super(parentJoint,null,null,[2.5,9,2,-40,150,0.5,0.45,1.1],LimbShape);
 	}
 }
-
 
 class Wrist extends Joint
 {
@@ -571,7 +539,6 @@ class Wrist extends Joint
 	}
 }
 
-
 class Phalange extends Joint
 {
 	constructor(parentJoint,params)
@@ -580,7 +547,6 @@ class Phalange extends Joint
 	}
 	
 }
-
 
 class Fingers extends Phalange
 {
@@ -597,7 +563,6 @@ class Fingers extends Phalange
 		this.sub_finger.turnJoint(this.tiltAngle/3,-this.turnAngle/3,this.bendAngle);
 	}
 }
-
 
 // дефиниция на човече
 class Human extends Joint
@@ -640,30 +605,25 @@ class Human extends Joint
 		scene.add(this);
 	}
 		
-	
 	_turn()
 	{
 		this.turnJoint(this.tiltAngle,-this.turnAngle,-this.bendAngle,'YXZ');
 	}
 }
 
-
 class Female extends Human
 {
 	constructor(){super(true,0.95);} 
 }
-
 
 class Male extends Human
 {
 	constructor(){super(false);} 
 }
 
-
 class Child extends Human
 {
 	constructor(){super(false,0.65);} 
 }
-
 
 createScene();
